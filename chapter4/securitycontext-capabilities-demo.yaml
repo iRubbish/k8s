@@ -1,0 +1,25 @@
+# Maintainer: MageEdu <mage@magedu.com>
+# # URL: http://www.magedu.com
+apiVersion: v1
+kind: Pod
+metadata:
+  name: securitycontext-capabilities-demo
+  namespace: default
+spec:
+  containers:
+  - name: demo
+    image: ikubernetes/demoapp:v1.0
+    imagePullPolicy: IfNotPresent
+    #自定义容器启动时默认运行程序，这个程序需要在镜像内部存在
+    command: ["/bin/sh","-c"]
+    #自定义传递运行程序的参数，可以直接写在command中。这里的iptables命令的作用是将80端口数据转到8080端口。所以最后你访问两个端口都可以。
+    args: ["/sbin/iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80 && /usr/bin/python3 /usr/local/bin/demo.py"]
+    #自定义容器安全级别，只对当前容器有效非全局。
+    securityContext:
+    #自定义selinux权限,如果不给权限的话，上面的设置iptables命令是没有>权限运行的。因为容器内的root是一个虚拟的，从某种意义上来说就是一个普通
+#用户，一个普通用户是没有权限修改iptables权限的。
+      capabilities:
+        #增加网络管理权限
+        add: ['NET_ADMIN']
+        #移除改变UID和GID权限
+        drop: ['CHOWN']
