@@ -8,6 +8,7 @@ spec:
   - name: demo
     image: ikubernetes/demoapp:v1.0
     imagePullPolicy: IfNotPresent
+    #设置周期性检测，检测未通过时，与该Pod关联的Service，会将该Pod从Service的后端可用端点列表中删除；直接再次就绪，重新添加回来。未定义时，只要容器未终止，即为就绪
     readinessProbe:
       httpGet:
         path: '/readyz'
