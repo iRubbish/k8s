@@ -9,14 +9,22 @@ spec:
     image: ikubernetes/demoapp:v1.0
     imagePullPolicy: IfNotPresent
     ports:
+    #定义端口变量名，后面可以直接引用
     - name: http
       containerPort: 80
+    #设置内核安全参数，可不加。加上主要是用于模拟80端口请求失败的环境。
     securityContext:
       capabilities:
         add:
         - NET_ADMIN
+    #设置周期性检测，检测未通过时，kubelet会根据restartPolicy的定义来决定是否会重启该容器；未定义时，Kubelet认为只容器未终止，即为健康
     livenessProbe:
+      #监控80端口的健康值
       tcpSocket:
+        #这里的http是引用了上面的ports定义的name，类似于变量。对于以后更改端口更加便利只需要改一处即可。
         port: http
+      #5秒一检测
       periodSeconds: 5
+      #首次检测延迟5秒
       initialDelaySeconds: 5
+

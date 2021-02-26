@@ -11,9 +11,11 @@ spec:
   - name: demo
     image: ikubernetes/demoapp:v1.0
     imagePullPolicy: IfNotPresent
+    #设置周期性检测，检测未通过时，kubelet会根据restartPolicy的定义来决定是否会重启该容器；未定义时，Kubelet认为只容器未终止，即为健康
     livenessProbe:
       httpGet:
         path: '/livez'
         port: 80
         scheme: HTTP
       initialDelaySeconds: 5
+#这个检测机制与ExecAction有所不同，它向指定的path发HTTP请求，通过响应码表示成功来确认pod是否健康，如果是非健康响应码会自动重启pod。有可能首次请求是失败的，在查看pod事件详情的时候如果它没有自动重启的话说明这是一个假的失败，你可以通过自己手动访问确认这个pod是否真实失败的。

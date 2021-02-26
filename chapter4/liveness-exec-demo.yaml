@@ -8,9 +8,15 @@ spec:
   - name: demo
     image: ikubernetes/demoapp:v1.0
     imagePullPolicy: IfNotPresent
+    #设置周期性检测，检测未通过时，kubelet会根据restartPolicy的定义来决定是否会重启该容器；未定义时，Kubelet认为只容器未终止，即为健康
     livenessProbe:
       exec:
+      #执行一条命令来判断是否正常
         command: ['/bin/sh', '-c', '[ "$(curl -s 127.0.0.1/livez)" == "OK" ]']
+      #初始延迟5秒
       initialDelaySeconds: 5
+      #超时1秒
       timeoutSeconds: 1
+      #每隔5秒重试检测
       periodSeconds: 5
+      #pod启动后可通过 kubectl describe pods liveness-exec-demo 命令查看 Containers字段下的Liveness查看探针详情。如果检测的健康值为非OK的可以查看Events下的事件详情，你会发现pod自动重启了。
