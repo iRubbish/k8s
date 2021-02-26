@@ -4,6 +4,7 @@ metadata:
   name: init-container-demo
   namespace: default
 spec:
+  #定义一个初始化容器，一般我们将涉及到需要修改特权模式的配置放在initContainers中这样能竟可能的保证k8s服务的安全性。初始化容器执行完后它就退出了，但它执行的修改配置被主容器继承，你要想在主容器执行一些需要权限的命令，例如 iptables 是无法执行的
   initContainers:
   - name: iptables-init
     image: ikubernetes/admin-box:latest

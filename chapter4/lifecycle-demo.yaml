@@ -18,10 +18,13 @@ spec:
         port: 80
         scheme: HTTP
       initialDelaySeconds: 5
+    #设置自定义钩子，也就是我们自定义容器的一些动作。
     lifecycle:
+      #设置启动后的动作
       postStart:
         exec:
           command: ['/bin/sh','-c','iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-ports 80']
+      #设置结束前的动作
       preStop:
         exec:
           command: ['/bin/sh','-c','while killall python3; do sleep 1; done']
