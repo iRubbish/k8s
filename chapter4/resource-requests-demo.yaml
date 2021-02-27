@@ -6,11 +6,15 @@ spec:
   containers:
   - name: stress
     image: ikubernetes/stress-ng
+    #这个进程默认最多内存占用256m，stress是一个专门用来性能压测的工具
     command: ["/usr/bin/stress-ng", "-c 1", "-m 1", "--metrics-brief"]
+    #定义容器资源占用，这个字段也可以定义为全局。当前是定义在一个容器上，一般我们也是单独定义每个容器的资源占用。
     resources:
+      #定义下阈值最少占用资源
       requests:
         memory: "128Mi"
         cpu: "200m"
+      #定义上阈值最大占用资源
       limits:
         memory: "512Mi"
         cpu: "400m"

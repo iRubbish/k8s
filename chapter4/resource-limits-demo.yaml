@@ -7,6 +7,7 @@ metadata:
 spec:
   containers:
   - name: simmemleak
+    #这个镜像是一个专门模拟内存泄露的实例，专门用来内存性能测试的。
     image: ikubernetes/simmemleak
     imagePullPolicy: IfNotPresent
     resources:
