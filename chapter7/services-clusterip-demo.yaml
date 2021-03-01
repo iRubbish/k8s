@@ -1,0 +1,19 @@
+# Maintainer: MageEdu <mage@magedu.com>
+# URL: http://www.magedu.com
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoapp-svc
+  namespace: default
+spec:
+#手动指定serviceIP
+  clusterIP: 10.97.72.1
+#设置标签选择器，并指定相应的标签名与值名。
+  selector:
+    app: demoapp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

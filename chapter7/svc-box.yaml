@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svc-box
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: admin-box
+  template:
+    metadata:
+      labels:
+        app: admin-box
+    spec:
+      containers:
+      - name: admin
+        image: ikubernetes/admin-box:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh","-c"]
+        args: ["sleep 99999"]

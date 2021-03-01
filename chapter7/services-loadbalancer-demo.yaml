@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoapp-loadbalancer-svc
+spec:
+  #这个类型极少使用，获取外部IP的。大致了解一下即可。
+  type: LoadBalancer
+  selector:
+    app: demoapp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+ # loadBalancerIP: 1.2.3.4

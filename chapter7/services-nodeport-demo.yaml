@@ -1,0 +1,25 @@
+# Maintainer: MageEdu <mage@magedu.com>
+# URL: http://www.magedu.com
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoapp-nodeport-svc
+spec:
+  #不指名type的话默认是ClusterIP，NodePort是一个增强型ClusterIP.通常需要集群外部访问的时候使用。
+  type: NodePort
+  #如果不手动知道IP的话那会自动分配，当然生产环境下不太建议手动指定，容易IP冲突。
+  clusterIP: 10.97.56.1
+  selector:
+    app: demoapp
+  ports:
+  - name: http
+    protocol: TCP
+    #这里是service监听的端口，这个端口与pod暴露的端口做映射。一般建议端口与pod暴露的端口一致
+    port: 80
+    #这里是pod暴露出来的端口，一般用作于与service做映射，集群内部访问用。
+    targetPort: 80
+    #这里的nodeport可以不用手动指定，只要类型指定的是NodePort那么它的端口也会自动分配一个不冲突的端口，这个端口也是集群外部访问时使用的。
+    nodePort: 31398
+  #externalTrafficPolicy的默认参数是Cluster，如果改成Local的话，如果这个pod在node1上，我们的访问地址也是node1的话速度能快一点。反之这个pod不在node1上则访问失败。
+  # externalTrafficPolicy: Local
