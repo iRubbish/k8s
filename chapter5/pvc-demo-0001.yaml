@@ -4,10 +4,13 @@ metadata:
   name: pvc-demo-0001
   namespace: default
 spec:
+  #指定需要绑定pv的，与pv想匹配的预期字段。也就是与下面所处字段中最匹配的才与pv绑定，也就是一个预值。
   accessModes: ["ReadWriteMany"]
   volumeMode: Filesystem
+  #设置要求资源，指定最大与最小值。
   resources:
     requests:
       storage: 3Gi
     limits:
       storage: 10Gi
+  #以上pvc设定的字段值，会与pv相匹配，最匹配的pv则与之绑定，类似于我们平常的搜索，通过我们设定的条件，条件匹配越多的那么搜索结果也就越靠前。

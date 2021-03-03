@@ -10,6 +10,7 @@ spec:
       storage: 2Gi
     limits:
       storage: 5Gi
+  #指定特定的标签才与此pv绑定，用的极少。
   selector:
     matchLabels:
       usedof: "redisdata"

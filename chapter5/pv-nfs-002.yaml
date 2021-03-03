@@ -14,4 +14,4 @@ spec:
     - nfsvers=4.1
   nfs:
     path:  "/data/redis002"
-    server: 172.29.1.13
+    server: 10.228.84.34

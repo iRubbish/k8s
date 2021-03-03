@@ -1,17 +1,25 @@
 apiVersion: v1
+#创建pv
 kind: PersistentVolume
 metadata:
   name: pv-nfs-demo
 spec:
+  #设置pv容量，目前，Capacity仅支持存储容量设定，将来还应该可以指定IOPS和吞吐量（throughput）。
   capacity:
+    #设置存储容量为5G
     storage: 5Gi
+  #指定该pv支持的文件系统
   volumeMode: Filesystem
+  #设置pv的访问模式，这里设置为多路读写策略
   accessModes:
     - ReadWriteMany
+  #设置pv空间被释放时的处理机制，这里的Retain是希望保留的意思。
   persistentVolumeReclaimPolicy: Retain
+  #设置挂载选项，这里是两个nfs专用的挂载选项
   mountOptions:
     - hard
     - nfsvers=4.1
+  #设置nfs服务器地址与存储路径
   nfs:
-    path:  "/data/redis002"
-    server: nfs.ilinux.io
+    path:  "/data/redis001"
+    server: 10.228.84.34

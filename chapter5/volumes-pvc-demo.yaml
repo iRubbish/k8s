@@ -8,6 +8,9 @@ spec:
   - name: redis
     image: redis:alpine
     imagePullPolicy: IfNotPresent
+    #一定要配置用户ID，不然会没权限，启动失败
+    securityContext:
+      runAsUser: 1099
     ports:
     - containerPort: 6379
       name: redisport
@@ -16,5 +19,6 @@ spec:
       name: redis-rbd-vol
   volumes:
   - name: redis-rbd-vol
+      #指定要绑定的已创建的pvc名
     persistentVolumeClaim:
-      claimName: pvc-demo-0002
+      claimName: pvc-demo-0001
