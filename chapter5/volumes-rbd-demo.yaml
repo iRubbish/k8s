@@ -14,14 +14,21 @@ spec:
       name: redis-rbd-vol
   volumes:
     - name: redis-rbd-vol
+      #设置rbd存储类型，很麻烦暂时没怎么学这个网络存储，不做详细解说
       rbd:
+        #指定rbd服务器监视器地址，一般为
         monitors:
         - '172.29.200.1:6789'
         - '172.29.200.2:6789'
         - '172.29.200.3:6789'
+        #指定网络存储存储池
         pool: kube
+        #这一不懂，待解释
         image: redis-img1
+        #指定格式化类型
         fsType: xfs
         readOnly: false
+        #指定要访问的用户
         user: kube
+        #指定密钥文件路径
         keyring: /etc/ceph/ceph.client.kube.keyring

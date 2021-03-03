@@ -6,22 +6,31 @@ spec:
   containers:
   - name: filebeat
     image: ikubernetes/filebeat:5.6.7-alpine
+    #配置自定义环境变量
     env:
+    #设置redis地址
     - name: REDIS_HOST
       value: redis.ilinux.io:6379
+    #设置日志级别
     - name: LOG_LEVEL
       value: info
+    #挂载存储卷
     volumeMounts:
+    #将底下定义好的存储卷/var/log路径挂载到docker内部的/var/log中
     - name: varlog
       mountPath: /var/log
+    #将底下定义好的存储卷/var/run/docker.sock路径挂载到docker内部的/var/run/docker.sock中
     - name: socket
       mountPath: /var/run/docker.sock
+    #将底下定义好的存储卷/var/lib/docker/containers路径挂载到docker内部的/var/lib/docker/containers中
     - name: varlibdockercontainers
       mountPath: /var/lib/docker/containers
       readOnly: true
   volumes:
   - name: varlog
+    #定义hostPath类型存储卷，类似于docker的宿主机上的存储卷。但是如果重新部署pod因为每一个创建的pod不一定都在同一个node上，所以这种存储卷类型不建议使用，一般在类似收集每台机器的日志情况下才会使用到。
     hostPath:
+      #指定本地事先必须存在的文件路径
       path: /var/log
   - name: varlibdockercontainers
     hostPath:

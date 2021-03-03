@@ -11,14 +11,21 @@ spec:
     ports:
     - containerPort: 6379
       name: redisport
+    #定义一个ID999的用户对挂载的目录有读写权限，需要你确保nfs服务器下有这个id用户
     securityContext:
-      runAsUser: 999
+      runAsUser: 1099
+    #设置挂载路径，这里指定将nfs服务器的/data/redis路径挂载到容器内的/data路径
     volumeMounts:
     - mountPath: /data
       name: redisdata
+  #定义一个名为redisdata存储卷
   volumes:
     - name: redisdata
+      #定义它的存储卷类型为nfs
       nfs:
-        server: nfs.ilinux.io
+        #指定nfs服务器地址
+        server: 10.228.84.34 
+        #设置nfs文件导出路径，我的理解是设置nfs映射路径
         path: /data/redis
+        #设置为读写权限
         readOnly: false
