@@ -27,5 +27,7 @@ spec:
   - name: config-file-store
     #定义一个存储卷类型，你想用什么就定义什么，只要k8s支持，这里使用的是emptyDir，这是一个高速可用的临时存储卷，一般用于高速缓存场景，可指定内存空间或者硬盘空间。
     emptyDir:
+      #指定为内存，作为缓存作用
       medium: Memory
+      #指定内存大小
       sizeLimit: 16Mi
