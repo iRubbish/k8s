@@ -7,12 +7,18 @@ spec:
   containers:
   - image: nginx:alpine
     name: nginx-server
+    #设置挂载存储卷
     volumeMounts:
+    #将定义名为ngxconfs的存储卷挂载至/etc/nginx/conf.d/目录下，并设置为只读权限
     - name: ngxconfs
       mountPath: /etc/nginx/conf.d/
       readOnly: true
   volumes:
+  #定义一个名为ngxconfs的存储卷
   - name: ngxconfs
+    #定义存储卷为configMap类型
     configMap:
+      #指定提前创建好的configMap资源名
       name: nginx-config-files
+      #设定里面的键名是否为必选项。
       optional: false

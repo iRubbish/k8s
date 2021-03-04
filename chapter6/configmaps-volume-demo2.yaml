@@ -9,6 +9,7 @@ spec:
     image: envoyproxy/envoy-alpine:v1.14.1
     command: ['/bin/sh','-c','envoy -c /etc/envoy/..data/envoy.yaml']
     volumeMounts:
+    #挂载appconfs存储卷到容器内的/etc/envoy，并设置为只读权限，这里的appconfs是一个定义的存储卷，你也可以理解为是一个变量
     - name: appconfs
       mountPath: /etc/envoy
       readOnly: true
@@ -29,14 +30,24 @@ spec:
           key: demoapp.host
           optional: true
   volumes:
+  #设置这个存储卷的名为appconfs，你可以理解为一个变量
   - name: appconfs
+    #指定存储卷插件为configMap
     configMap:
+      #加载名为demoapp-confs的存储卷，这个demoapp-confs是提前创建好的
       name: demoapp-confs
+      #明确定义demoapp-confs中指定的挂载信息
       items:
+      #引入envoy.yaml，作为挂载时使用的
+      #key是键名
       - key: envoy.yaml
+        #挂载文件的文件名
         path: envoy.yaml
+        #挂载后的文件权限
         mode: 0644
+      #引入lds.conf，作为挂载时使用的
       - key: lds.conf
         path: lds.conf
         mode: 0644
       optional: false
+#此配置文件演示了一个容器如何在挂载configMap的时候，只挂载其有限的几个键值而非所有的，同时也演示了如何使用环境变值引用的方式，引用其他键值，已经被挂载的也可重复引用。

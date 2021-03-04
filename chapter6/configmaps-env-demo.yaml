@@ -6,9 +6,10 @@ kind: ConfigMap
 metadata:
   name: demoapp-config
   namespace: default
+#定义数据项
 data:
-  demoapp.port: "8080"
-  demoapp.host: 0.0.0.0
+  demoapp.port: "8090"
+  demoapp.host: 127.0.0.1
 ---
 apiVersion: v1
 kind: Pod
@@ -19,16 +20,22 @@ spec:
   containers:
   - image: ikubernetes/demoapp:v1.0
     name: demoapp
+    #设置容器环境变量
     env:
+    #定义一个需要像哪个变量赋值
     - name: PORT
+      #valueFrom设定这个值的来源
       valueFrom:
+        #绑定configmap资源中的哪个资源，与comfigmap的数据项的键名
         configMapKeyRef:
           name: demoapp-config
           key: demoapp.port
+          #指定这个配置是否为必须选项，
           optional: false
     - name: HOST
       valueFrom:
         configMapKeyRef:
           name: demoapp-config
           key: demoapp.host
+          #true是可有可无的。也就是就是在configmap资源中没有定义这个键名的话那也可以启动pod，否则会报错。
           optional: true
