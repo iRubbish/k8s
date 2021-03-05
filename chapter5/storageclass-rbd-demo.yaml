@@ -1,8 +1,11 @@
+#注意这里的群组不太一样
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: fast-rbd
+#指定后面存储提供商是谁，存储类要依赖该字段值来判定要使用的存储插件以便适配到目标存储系统。这里指定的是ceph的rbd存储。
 provisioner: kubernetes.io/rbd
+#定义连接至指定的Provisioner类别下的某特定存储时需要使用的各相关参数；不同Provisioner的可用的参数各不相同，需要查官方的文档才可知道。
 parameters:
   monitors: ceph01.ilinux.io:6789,ceph02.ilinux.io:6789,ceph03.ilinux.io:6789
   adminId: admin
@@ -15,4 +18,5 @@ parameters:
   fsType: ext4
   imageFormat: "2"
   imageFeatures: "layering"
+#设置回收策略，这里设置的是保留，如果不定义则是delete。
 reclaimPolicy: Retain
