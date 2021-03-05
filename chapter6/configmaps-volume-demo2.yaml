@@ -34,7 +34,7 @@ spec:
   - name: appconfs
     #指定存储卷插件为configMap
     configMap:
-      #加载名为demoapp-confs的存储卷，这个demoapp-confs是提前创建好的
+      #加载名为demoapp-confs的存储卷，这个demoapp-confs是提前创建好的configMap
       name: demoapp-confs
       #明确定义demoapp-confs中指定的挂载信息
       items:
