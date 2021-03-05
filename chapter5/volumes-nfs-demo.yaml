@@ -10,6 +10,7 @@ spec:
     image: redis:alpine
     ports:
     - containerPort: 6379
+      #引用redisdata存储卷
       name: redisport
     #定义一个ID999的用户对挂载的目录有读写权限，需要你确保nfs服务器下有这个id用户
     securityContext:
