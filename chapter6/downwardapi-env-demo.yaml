@@ -41,4 +41,4 @@ spec:
             resourceFieldRef:
               resource: requests.memory
               divisor: 1Mi
-  restartPolicy: Never
+  restartPolicy: Never      #设置pod重启策略,Never为不重启。

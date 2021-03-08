@@ -46,3 +46,5 @@ spec:
           resource: requests.memory
           divisor: "1Mi"
         path: "mem_request"
+#设置将定义的配置挂载到容器内部,已文件的格式保存。
+#
