@@ -7,6 +7,7 @@ metadata:
   name: volumes-pvc-longhorn-demo
   namespace: default
 spec:
+  nodeName: node1       #指定这个pod在node1上运行
   containers:
   - name: redis
     image: redis:alpine

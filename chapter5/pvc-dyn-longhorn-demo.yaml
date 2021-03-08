@@ -4,11 +4,16 @@ metadata:
   name: pvc-dyn-longhorn-demo
   namespace: default
 spec:
+  #设置访问模式
   accessModes: ["ReadWriteOnce"]
+  #设置文件系统
   volumeMode: Filesystem
+  #设置存储的最大值与最小值
   resources:
     requests:
-      storage: 2Gi
+      storage: 3Gi
     limits:
       storage: 10Gi
+  #指定该PVC资源隶属的存储类资源名称；指定了存储类资源的PVC仅能在同一个存储类下筛选PV资源，否则，就只能从所有不具有存储类的PV中进行筛选
   storageClassName: longhorn
+#它可以自动在创建pvc的同时也将pv创建了，并与之绑定。实现了动态创建pv。
