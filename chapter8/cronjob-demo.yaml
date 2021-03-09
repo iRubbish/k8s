@@ -4,7 +4,7 @@ metadata:
   name: cronjob-demo
   namespace: default
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/2 * * * *"       #定义时间
   jobTemplate:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
       completions: 1
       ttlSecondsAfterFinished: 600
       backoffLimit: 3
-      activeDeadlineSeconds: 60
+      activeDeadlineSeconds: 60       #设置作业启动后可处于活动状态的时长
       template:
         spec:
           containers:
@@ -24,5 +24,5 @@ spec:
             - /bin/sh
             - -c
             - date; echo Hello from CronJob, sleep a while...; sleep 10
-          restartPolicy: OnFailure
-  startingDeadlineSeconds: 300
+          restartPolicy: OnFailure      #设定失败后重启
+  startingDeadlineSeconds: 300        #因错过时间点而未执行的作业的可超期市场

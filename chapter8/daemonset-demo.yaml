@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: DaemonSet       #DaemonSet控制器是让每个node只运行一个pod。默认更新策略也是滚动更新策略
 metadata:
   name: daemonset-demo
   namespace: default
@@ -19,7 +19,7 @@ spec:
         component: node-exporter
     spec:
       containers:
-      - image: prom/node-exporter:v0.18.1
+      - image: prom/node-exporter:v1.1.1
         name: prometheus-node-exporter
         ports:
         - name: prom-node-exp

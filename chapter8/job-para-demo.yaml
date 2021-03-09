@@ -11,8 +11,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "-c", "sleep 60"]
       restartPolicy: Never
-  completions: 12 
-  parallelism: 2
+  completions: 12       #期望的成功完成的作业次数
+  parallelism: 2        #同时进行的队列，就是它会同时起两个pod，你可以理解为副本。
   ttlSecondsAfterFinished: 3600
   backoffLimit: 3
   activeDeadlineSeconds: 1200

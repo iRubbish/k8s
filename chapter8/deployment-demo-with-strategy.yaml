@@ -2,7 +2,7 @@
 # Maintainer: MageEdu <mage@magedu.com>
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment    #Deployment主要是控制无状态应用的，它不直接管理Pod，而是借助于ReplicaSet来管理Pod；最常用的无状态应用控制器
 metadata:
   name: deployment-demo-with-strategy
 spec:
@@ -26,7 +26,8 @@ spec:
         - containerPort: 80
           name: http
   strategy:
-    type: RollingUpdate
+    type: RollingUpdate     #指定滚动更新策略类型
     rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+      maxSurge: 0           #设置最多加副本为0
+      maxUnavailable: 1     #指定一次更新最多减去一个副本
+#设置这样的更新策略，意思是强制让滚动更新每次只能更新一个pod 副本，如果是4个副本的话，需要滚动更新四个来回，删一个更新一个删一个更新一个。而不是一次性都按照副本的25%来更新。

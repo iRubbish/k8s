@@ -2,12 +2,12 @@
 # Maintainer: MageEdu <mage@magedu.com>
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment      #它不直接管理Pod，而是借助于ReplicaSet来管理Pod；最常用的无状态应用控制器，它采用滚动更新的
 metadata:
   name: deployment-demo
 spec:
-  replicas: 4
-  selector:
+  replicas: 4       #设置副本数
+  selector:         #标签选择器
     matchLabels:
       app: demoapp
       release: stable
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: demoapp
-        image: ikubernetes/demoapp:${VERSION}
+        image: ikubernetes/demoapp:${VERSION}     #这个变量是为了做实验方便，并不少在此yaml文件中引用的变量是由宿主机定义后，传值到此文件中。宿主机操作命令如下：VERSION=v1.0 envsubst < deployment-demo.yaml | kubectl apply -f -
         ports:
         - containerPort: 80
           name: http
