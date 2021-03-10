@@ -27,3 +27,4 @@ spec:
         ports:
         - name: http
           containerPort: 80
+#为了可以实现一个yaml文件多用，所以使用了环境变量。yaml与k8s都不支持环境变量的，需要我们人为的在shell环境中才可替换，命令： VERSION=v1.0 DEPLOY=blue envsubst < service-blue-green.yaml | kubectl apply -f - 

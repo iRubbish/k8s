@@ -7,6 +7,7 @@ spec:
   type: ClusterIP
   clusterIP: 10.97.26.1
   selector:
+    #这里只取replicaset-demo与replicaset-demo-v1.1定义的相同标签，所以你访问这个service的时候只要是符合这两个标签的，服务那都可被通过service的调度访问到。
     app: demoapp
     release: stable
   ports:

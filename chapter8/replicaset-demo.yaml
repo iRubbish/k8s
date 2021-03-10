@@ -3,15 +3,17 @@ kind: ReplicaSet
 metadata:
   name: replicaset-demo
 spec:
-  minReadySeconds: 3
+  minReadySeconds: 3  #Pod就绪后多少秒内，Pod任一容器无crash方可视为“就绪”
   replicas: 0
   selector:
+    #指定与此控制器相匹配的pod标签，如匹配则控制。
     matchLabels:
       app: demoapp
       release: stable
       version: v1.0
   template:
     metadata:
+      #下面设定的标签需被上面的设定的标签所包含，可以不完全相同但必须包含。所以最好两者标签一同，不然会出现死循环但状态。
       labels:
         app: demoapp
         release: stable
@@ -23,13 +25,13 @@ spec:
         ports:
         - name: http
           containerPort: 80
-        livenessProbe:
-          httpGet:
-            path: '/livez'
-            port: 80
-          initialDelaySeconds: 5
-        readinessProbe:
-          httpGet:
-            path: '/readyz'
-            port: 80
-          initialDelaySeconds: 15
+        # livenessProbe:
+        #   httpGet:
+        #     path: '/livez'
+        #     port: 80
+        #   initialDelaySeconds: 5
+        # readinessProbe:
+        #   httpGet:
+        #     path: '/readyz'
+        #     port: 80
+        #   initialDelaySeconds: 15

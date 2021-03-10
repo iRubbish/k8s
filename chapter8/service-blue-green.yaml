@@ -18,3 +18,4 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 80
+#实现一个yaml文件多次复用
