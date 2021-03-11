@@ -8,6 +8,7 @@ spec:
   accessModes: ["ReadWriteOnce"]
   #设置文件系统
   volumeMode: Filesystem
+  #persistentVolumeReclaimPolicy: Retain
   #设置存储的最大值与最小值
   resources:
     requests:

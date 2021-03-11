@@ -1,0 +1,10 @@
+- targets:
+  - 172.29.1.11:9093
+  labels:
+    app: alertmanager
+  - 172.29.1.12:9093
+  labels:
+    app: alertmanager
+  - 172.29.1.13:9093
+  labels:
+    app: alertmanager

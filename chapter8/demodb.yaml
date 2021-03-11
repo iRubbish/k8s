@@ -28,7 +28,7 @@ spec:
     matchLabels:
       app: demodb
   serviceName: "demodb"
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: demodb-shard
-        image: ikubernetes/demodb:v0.2
+        image: ikubernetes/demodb:v0.1
         ports:
         - containerPort: 9907
           name: db
