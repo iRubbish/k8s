@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: linux39  #default namespace的DNS
+spec:
+  containers:
+  - image: harbor.linux39.com/linux39/busybox
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: Always 
+    name: busybox
+  restartPolicy: Always

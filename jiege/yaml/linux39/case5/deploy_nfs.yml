@@ -1,0 +1,50 @@
+#apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ng-deploy-80
+  template:
+    metadata:
+      labels:
+        app: ng-deploy-80
+    spec:
+      containers:
+      - name: ng-deploy-80
+        image: nginx 
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/mysite
+          name: my-nfs-volume
+        - mountPath: /data/nginx/html
+          name: linux39-nfs-volume
+      volumes:
+      - name: my-nfs-volume
+        nfs:
+          server: 172.31.3.104
+          path: /data/k8sdata
+      - name: linux39-nfs-volume
+        nfs:
+          server: 172.31.3.104
+          path: /data/linux39
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ng-deploy-80
+spec:
+  ports:
+  - name: http
+    port: 81
+    targetPort: 80
+    nodePort: 30016
+    protocol: TCP
+  type: NodePort
+  selector:
+    app: ng-deploy-80

@@ -1,0 +1,4 @@
+apiVersion: v1 #API版本
+kind: Namespace #类型为namespac
+metadata:  #定义元数据
+  name: linux39

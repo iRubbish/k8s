@@ -1,0 +1,22 @@
+apiVersion: v1  
+kind: ReplicationController  
+metadata:  
+  name: ng-rc
+  namespace: linux39
+spec:  
+  replicas: 2
+  selector:  
+    app: ng-rc-80 
+    #app1: ng-rc-81
+
+  template:   
+    metadata:  
+      labels:  
+        app: ng-rc-80
+        #app1: ng-rc-81
+    spec:  
+      containers:  
+      - name: ng-rc-80 
+        image: nginx  
+        ports:  
+        - containerPort: 80 

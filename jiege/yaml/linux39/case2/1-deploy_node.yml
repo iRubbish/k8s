@@ -1,0 +1,25 @@
+#apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: linux39
+spec:
+  replicas: 1
+  selector:
+    #matchLabels: #rs or deployment
+    #  app: ng-deploy3-80
+    matchExpressions:
+      - {key: app, operator: In, values: [ng-deploy-80,ng-rs-81]}
+  template:
+    metadata:
+      labels:
+        app: ng-deploy-80
+    spec:
+      containers:
+      - name: ng-deploy-80
+        image: nginx:1.17.5 
+        ports:
+        - containerPort: 80
+      #nodeSelector:
+      #  env: group1

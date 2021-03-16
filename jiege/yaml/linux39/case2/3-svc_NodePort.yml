@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ng-deploy-80 
+  namespace: linux39
+spec:
+  ports:
+  - name: http
+    port: 81
+    targetPort: 80
+    nodePort: 30012
+    protocol: TCP
+  type: NodePort
+  selector:
+    app: ng-deploy-80
