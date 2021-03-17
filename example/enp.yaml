@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: mysql
+  namespace: kube-example
+subsets:
+  - addresses:
+    - ip: 10.228.81.91   # --指定宿机主mysql服务器
+    ports:
+      - name: mysql
+        port: 3306     # --指定端口
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: kube-example
+spec:
+  selector:
+    app: wordpress
+  type: NodePort
+  ports:
+  - name: web
+    port: 80
+  - name: mysql
+    port: 3306
+    targetPort: wdport
+    protocol: TCP
+    # nodePort: 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: kube-example
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:5.3.2-apache
+        ports:
+        - containerPort: 80
+          name: wdport
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: mysql:3306
+        - name: WORDPRESS_DB_USER
+          value: root
+        - name: WORDPRESS_DB_PASSWORD
+          value: "123456"
