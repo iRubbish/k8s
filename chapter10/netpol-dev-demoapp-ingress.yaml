@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: demoapp-ingress
-  namespace: dev
+  namespace: dev      #这是一个命名空间级别的，所以你需要指定某一命名空间，指定的命名空间也就是你要控制的那个命名空间给它一定的访问控制策略哦。
 spec:
   podSelector:
     matchLabels:
@@ -14,13 +14,13 @@ spec:
         matchExpressions:
         - key: name
           operator: In
-          values: [dev, kube-system, logs, monitoring, kubernetes-dashboard]
+          values: [dev, kube-system, logs, monitoring, kubernetes-dashboard]  #设定这几个命名空间的pod可与dev中的pod通信，注意它是采用匹配命名空间的标签的，所以我们需要提前给命名空间打上相对于的标签比如dev命名空间打上dev标签  kubectl label ns dev name=dev  
     #- ipBlock:
-    #    cidr: 192.168.0.0/16
+     #   cidr: 10.224.0.0/16                   #指定哪些网段可访问dev命名空间的pod
   - from:
     - namespaceSelector:
         matchExpressions:
-        - {key: name, operator: NotIn, values: ["default"]}
+        - {key: name, operator: NotIn, values: ["default"]}     #这是设定不可访问dev空间网络的范围
     ports:
     - protocol: TCP
       port: 80

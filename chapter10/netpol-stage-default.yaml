@@ -4,8 +4,9 @@ metadata:
   name: default
   namespace: stage
 spec:
-  podSelector: {}
-  policyTypes: ["Ingress","Egress"]
+  podSelector: {}    #留空默认是当前名称空间下的所有pod
+  policyTypes: ["Ingress","Egress"]       #设置有效规则ingress入站,Egress出站。两个都配就是出入站规则都生效。
+#这是将出入站规则都放一个yaml文件中了，规则编写与单独编写没什么大的区别，只是将单独的出入站规则二合一了。
   ingress:
   - from:
     - namespaceSelector:

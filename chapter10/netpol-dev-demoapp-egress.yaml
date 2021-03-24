@@ -9,7 +9,7 @@ spec:
       app: demoapp
   policyTypes: ["Egress"]
   egress:
-  - to: 
+  - to:                 #to是或逻辑只要满足to下的一个条件就行，to下的条件是与逻辑 
     ports:
     - protocol: UDP
       port: 53
