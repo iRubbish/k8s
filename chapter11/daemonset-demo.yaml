@@ -18,8 +18,8 @@ spec:
         app: prometheus
         component: node-exporter
     spec:
-      tolerations:
-      - key: node-role.kubernetes.io/master
+      tolerations:  #自定义能容忍的污点
+      - key: node-role.kubernetes.io/master   #这里设置这个pod能容忍master的污点，可以通过kubectl describe 查看 Taints后面的污点值。
         effect: NoSchedule
         operator: Exists
       containers:
@@ -31,3 +31,6 @@ spec:
           hostPort: 9100
       hostNetwork: true
       hostPID: true
+
+#给node设定污点命令 kubectl taint nodes  --help
+#简单的设定污点案例：kubectl taint nodes foo bar:NoSchedule，给foo节点打上了 bar污点
