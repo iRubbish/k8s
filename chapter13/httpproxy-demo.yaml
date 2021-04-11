@@ -8,11 +8,12 @@ spec:
     fqdn: www.ik8s.io
     tls:
       secretName: ik8s-tls
-      minimumProtocolVersion: "tlsv1.1"
+      minimumProtocolVersion: "tlsv1.1"   #这是兼容的tls最低版本
   routes:
   - conditions:
     - prefix: /
     services:
     - name: demoapp-deploy
       port: 80
-    permitInsecure: true
+    permitInsecure: true    #是否重定向到https协议，你也可以理解为是否强制https，true是不强制https，就是你访问http也可以https也可以，如果是false到话你访问http到话会强制跳转到https
+#注意如果直接采用访问IP地址的话可能会访问不同，建议通过域名访问。

@@ -16,3 +16,4 @@ spec:
           port: 80
       loadBalancerPolicy:
         strategy: Random
+#负载均衡，默认是随机调度的

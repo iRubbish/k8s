@@ -14,6 +14,7 @@ spec:
     - header:
         name: User-Agent
         contains: curl
+    #同时满足以上两个条件的时候调度到v12上，否则调度到v11上
     services:
     - name: demoappv12
       port: 80
