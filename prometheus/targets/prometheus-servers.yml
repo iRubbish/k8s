@@ -1,0 +1,4 @@
+- targets:
+  - master1:9090
+  labels:
+    app: prometeus-server

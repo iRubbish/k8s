@@ -1,0 +1,67 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.采集时间15秒
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.告警检测时间
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs: #抓去配置项
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    file_sd_configs:
+    - files:
+      - targets/prometheus-*.yml
+      refresh_interval: 1m
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    
+  - job_name: 'nodes'
+    file_sd_configs:
+    - files:
+      - targets/nodes-linux.yml
+      refresh_interval: 1m
+
+    relabel_configs:
+    - source_labels:
+      - __scheme__
+      - __address__
+      - __metrics_path__
+      #正则匹配元数据
+      regex: '(https|http)(.*)'
+      #将匹配到到元数据打endpoint标签
+      target_label: endpoint
+      #将正则匹配出来的元数据组合
+      replacement: "${1}://${2}"
+      #将上面两个字段关联起来，去掉中间的分号
+      separator: ""
+      #进行匹配判定，若匹配，则将 target_label 字段中指定的标签的值替换为 replacement 字段中保存的值；不写的话就是默认值
+      action: replace
+      #正则匹配app标签的元数据
+    - regex: "(app)"
+      replacement: "${1}_name"
+      #：将 regex 对所有的 标签名 进行匹配判定，而后将匹配到的标签的值赋给 replacement 字段指定的标签名之上；通常用于取出匹配的标签名的一部分生成新标签；
+      action: labelmap
+    - regex: "(app)"
+    #：将 regex 对所有的标签名进行匹配判定，能够匹配到的标签将从该 target 的标签集中删除
+      action: labeldrop
+    #设定元数据标签
+    - source_labels:
+      - __address__
+      #正则匹配master开头的target
+      regex: "master.*"
+      #设定动作，匹配到了就删除这个target
+      action: drop

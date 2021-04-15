@@ -1,0 +1,8 @@
+- targets:
+  - master2:9100
+  - master3:9100
+  - node1:9100
+  - node2:9100
+  - node3:9100
+  labels:
+   app: node_exporter  
