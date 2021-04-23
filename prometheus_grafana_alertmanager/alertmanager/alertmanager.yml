@@ -1,0 +1,33 @@
+#全局配置
+global:
+  resolve_timeout: 5m
+templates:
+- 'templates/*.yaml'
+#配置路由
+#route:
+#  receiver: 'web.hook'
+#配置发送警告地址
+#receivers:
+#- name: 'web.hook'
+#  webhook_configs:
+#  - url: 'http://10.228.81.119:8080/prometheus/alert'
+route:
+  receiver: node-down
+  group_by: ['instance']
+  group_wait: 5s
+  group_interval: 5s
+  repeat_interval: 5m
+  routes:
+  - match:
+      status: critical
+    receiver: node-down
+  - match_re:
+      status: ^(warning)$
+    receiver: node-disk
+receivers:
+- name: 'node-down'
+  webhook_configs:
+  - url: 'http://10.228.81.119:8080/prometheusalert?type=dd&tpl=prometheus-dd&ddurl=https://oapi.dingtalk.com/robot/send?access_token=07c7fba96a37b1ce54d62d7e3d73103999b9048d08f8a278e43d4e87e6f5d59f' #这里的配置仅在测试时使用，只是为了方便查看接收到的json消息，正式使用请更改为PrometheusAlert模版页面中显示的Url
+- name: 'node-disk'
+  webhook_configs:
+  - url: 'http://10.228.81.119:8080/prometheusalert?type=dd&tpl=prometheus-dd&ddurl=https://oapi.dingtalk.com/robot/send?access_token=08bee6aa340448df44f81ff197261d28ba25766f4db13798998591e7cdb6d319'

@@ -7,18 +7,23 @@ global:
 # Alertmanager configuration
 alerting:
   alertmanagers:
-  - static_configs:
-    - targets:
+  - file_sd_configs:
+    - files:
+      - targets/alertmanager-*.yml
+  #- static_configs:
+  #  - targets:
       # - alertmanager:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
+  - recording_rules/prometheus-*.yml
+  - alerting_rules/*.yaml
   # - "first_rules.yml"
   # - "second_rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
-scrape_configs: #抓去配置项
+scrape_configs: #抓取配置项
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
     file_sd_configs:
@@ -27,14 +32,24 @@ scrape_configs: #抓去配置项
       refresh_interval: 1m
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
-
+ 
+  - job_name: 'grafana'
+    file_sd_configs:
+    - files:
+      - targets/grafana-*.yml
+      refresh_interval: 1m
     
+  - job_name: 'alertmanager'
+    file_sd_configs:
+    - files:
+      - targets/alertmanager-*.yml
+      refresh_interval: 1m
+
   - job_name: 'nodes'
     file_sd_configs:
     - files:
       - targets/nodes-linux.yml
       refresh_interval: 1m
-
     relabel_configs:
     - source_labels:
       - __scheme__
@@ -56,12 +71,9 @@ scrape_configs: #抓去配置项
       #：将 regex 对所有的 标签名 进行匹配判定，而后将匹配到的标签的值赋给 replacement 字段指定的标签名之上；通常用于取出匹配的标签名的一部分生成新标签；
       action: labelmap
     - regex: "(app)"
-    #：将 regex 对所有的标签名进行匹配判定，能够匹配到的标签将从该 target 的标签集中删除
       action: labeldrop
-    #设定元数据标签
-    - source_labels:
-      - __address__
-      #正则匹配master开头的target
-      regex: "master.*"
-      #设定动作，匹配到了就删除这个target
-      action: drop
+    #：将 regex 对所有的标签名进行匹配判定，能够匹配到的标签将从该 target 的标签集中删除
+    #- source_labels:
+    #  - __address__
+    #  regex: "master.*"
+    #  action: drop

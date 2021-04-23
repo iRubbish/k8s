@@ -1,0 +1,16 @@
+groups:
+#设置组名
+- name: AllInstances
+  #设置规则
+  rules:
+  #设置规则名称
+  - alert: InstanceDown
+  # Condition for alerting 设置告警条件
+  #若某个Instance的up指标的值转为0且持续超过1分钟后，将触发告警
+    expr: up == 0
+    for: 1m
+    annotations:
+      title: 'Instance down'
+      description: "{{$labels.instance}} 已经关机1分钟了."
+    labels: 
+      status: 'critical'

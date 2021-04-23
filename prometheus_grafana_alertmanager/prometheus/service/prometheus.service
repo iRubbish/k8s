@@ -3,7 +3,7 @@ Description=prometheus
 Documentation=https://prometheus.io/
 [Service]
 User=root
-ExecStart=/usr/local/apps/prometheus/prometheus --config.file=/usr/local/apps/prometheus/prometheus.yml 
+ExecStart=/usr/local/apps/prometheus/prometheus --web.enable-lifecycle  --config.file=/usr/local/apps/prometheus/prometheus.yml 
 ExecReload=on-failure
 Restart=always
 [Install]

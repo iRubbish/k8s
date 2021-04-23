@@ -1,0 +1,46 @@
+groups:
+#设置组名
+- name: nodes_alerts
+  #设置规则
+  rules:
+  #设置规则名称
+  #- alert: DiskWillFillIn12Hours
+  # Condition for alerting 设置告警条件
+  #预测未来12小时是否会满掉
+  #  expr: predict_linear(node_filesystem_free_bytes{mountpoint="/"}[12h], 12*3600) < 10240
+  #  for: 1m
+  #  annotations:
+  #    description: Disk on {{ $label.instance }} will fill in approximately 12 hours.
+  #  labels: 
+  #    severity: warning
+# - name: prometheus_alerts
+#   #设置规则
+#   rules:
+#   #设置规则名称
+  - alert: PrometheusConfigReloadFailed
+    expr: prometheus_config_last_reload_successful == 0
+    for: 3m
+    annotations:
+      description: Reloading Prometheus configuration has failed on {{ $labels.instance }}.
+    labels: 
+      severity: warning
+# - name: prometheus_alerts
+#   #设置规则
+#   rules:
+#   #设置规则名称
+  - alert: CPU使用情况
+    expr: 100-(avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by(instance)* 100) > 60
+    for: 1m
+    labels:
+      status: warning
+    annotations:
+      summary: "{{$labels.mountpoint}} CPU使用率过高！"
+      description: "{{$labels.mountpoint }} CPU使用大于60%(目前使用:{{$value}}%)"
+  - alert: 内存使用
+    expr: 100 -(node_memory_MemTotal_bytes -node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes ) / node_memory_MemTotal_bytes * 100> 80
+    for: 1m
+    labels:
+      status: warning
+    annotations:
+      summary: "{{$labels.mountpoint}} 内存使用率过高！"
+      description: "{{$labels.mountpoint }} 内存使用大于80%(目前使用:{{$value}}%)"
