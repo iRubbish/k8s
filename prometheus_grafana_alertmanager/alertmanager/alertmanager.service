@@ -1,0 +1,15 @@
+[Unit]
+Description=alertmanager
+Documentation=https://prometheus.io/
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/local/apps/alertmanager/alertmanager  --config.file=/usr/local/apps/alertmanager/alertmanager.yml
+Restart=always
+RestartSec=1
+# Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
