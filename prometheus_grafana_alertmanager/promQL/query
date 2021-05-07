@@ -1,0 +1,4 @@
+grafana 查询job原始query语句
+label_values(node_uname_info{origin_prometheus=~"$origin_prometheus"}, job)
+
+sum by (instance) (node_filesystem_avail_bytes)
