@@ -17,3 +17,6 @@ helm status db
 
  ## 查看数据
  get mykey
+
+ # 修改默认存储类
+ kubectl annotate sc longhorn storageclass.kubernetes.io/is-default-class=true
